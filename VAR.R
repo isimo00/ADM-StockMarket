@@ -1,5 +1,3 @@
-# https://towardsdatascience.com/a-deep-dive-on-vector-autoregression-in-r-58767ebb3f06
-
 rm(list = ls())
 library(lmtest)
 library(quadprog)
@@ -32,6 +30,8 @@ dev.off()
 
 v1 <- cbind(VWAP, Open)
 colnames(v1) <- cbind("VWAP", "Open")
+
+# Exploratory analysis
 lagselect <- VARselect(v1, lag.max = 15, type = "const")
 lagselect$selection
 Model1 <- VAR(v1, p = 15, type = "const", season = NULL, exog = NULL) 

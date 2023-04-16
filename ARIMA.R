@@ -1,5 +1,3 @@
-# https://datascienceplus.com/time-series-analysis-using-arima-model-in-r/
-
 rm(list = ls())
 library(lmtest)
 library(quadprog)
@@ -30,9 +28,7 @@ dev.off()
 # Remove non-stationary
 urkpssTest(VWAP, type = c("tau"), lags = c("short"),use.lag = NULL, doplot = TRUE)
 tsstationary = diff(VWAP, differences=1)
-pdf(file="figures/ARIMA-vwap-stationary.pdf", 5, 3.57)
 plot(tsstationary, ylab = "VWAP stationary")
-dev.off()
 acf(VWAP,lag.max=34) 
 timeseriesseasonallyadjusted <- VWAP- components.ts$seasonal
 tsstationary <- diff(timeseriesseasonallyadjusted, differences=1)
@@ -46,14 +42,11 @@ coeftest(fitARIMA)
 confint(fitARIMA)
 
 acf(fitARIMA$residuals)
-boxresult-LjungBoxTest(fitARIMA$residuals,k=2,StartLag=1)
-plot(boxresult[,3],main= "Ljung-Box Q Test", ylab= "P-values", xlab= "Lag")
 qqnorm(fitARIMA$residuals)
 qqline(fitARIMA$residuals)
-auto.arima(tsData, trace=TRUE) 
+forecast::auto.arima(VWAP, trace=TRUE) 
 
 ## Forecasting
 predict(fitARIMA,n.ahead = 5)
-#futurVal <- forecast::forecast(fitARIMA,h=10, level=c(99.5))
 futurVal <- forecast(fitARIMA, lead = 50)
 plot(futurVal, type="l")
